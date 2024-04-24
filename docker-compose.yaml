@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: my_project_app
+    build: ./
+    depends_on:
+      - db
+    command: uvicorn "app.main:app:" --port 4010 --host 0.0.0.0
+    volumes:
+      - ./app:/src/app
+    ports:
+      - ${APP_HOST_PORT}:8000
+    restart: on-failure
+    env_file:
+      - .env
+
+
+  db:
+    container_name: my_project_postgres
+    image: postgres
+    environment:
+      - POSTGRES_USER=${POSTGRESS_DB_USER}
+      - POSTGRES_PASSWORD=${POSTGRESS_DB_PASSWORD}
+      - POSTGRES_DB=database
+    ports:
+      - ${POSTGRESS_DB_HOST_PORT}:5432
+    volumes:
+      - .postgres:/var/lib/postgres/data
+    restart: always

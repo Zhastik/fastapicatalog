@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from typing import List
 
-from Validate import add_iphone, get_iphone, update_iphone, patch_iphone
-from Database import iphone_database
+from app.Validate import add_iphone, get_iphone, update_iphone, patch_iphone
+from app.Database import iphone_database
 
 app = FastAPI(
     title='the plan to capture Poland'
