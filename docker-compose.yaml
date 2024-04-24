@@ -3,10 +3,10 @@ version: '3.8'
 services:
   app:
     container_name: my_project_app
-    build: ./
+    build: .
     depends_on:
       - db
-    command: uvicorn "app.main:app:" --port 4010 --host 0.0.0.0
+    command: uvicorn app.main:app --host 0.0.0.0
     volumes:
       - ./app:/src/app
     ports:
