@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from typing import List
+from typing import List, Optional
 
 from app.Validate import add_iphone, get_iphone, update_iphone, patch_iphone
 from app.Database import iphone_database
@@ -15,7 +15,9 @@ def Selected_iPhone(iphone_id: int):
     return [iphone for iphone in iphone_database if iphone.get('id') == iphone_id] # Выводит информацию из бд, по номеру id
 
 @app.get('/catalog')
-def Catalog(limit: int = 1, offset: int = 5):
+def Catalog(limit: int = 1,
+            offset: int = 5,
+            color: Optional[str] = None):
     """Каталог"""
 
     return [iphone.get('model') for iphone in iphone_database if (limit <= iphone.get('id') <= offset)]  #Выводит названия моделей, если они входят в диапозон

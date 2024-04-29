@@ -15,16 +15,30 @@ services:
     env_file:
       - .env
 
+#  postgres:
+#    image: postgres:13
+#    environment:
+#          - POSTGRES_USER=app
+#          - POSTGRES_PASSWORD=123qwe
+#          - POSTGRES_DB=movies_database
+#    volumes:
+#      - ./movies_database.ddl:/movies_database.ddl:ro
+#    ports:
+#      - "5432:5432"
+#    healthcheck:
+#      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${DB_USER} -d ${DB_NAME}'"]
+#      interval: 5s
+#      timeout: 10s
+#      retries: 120
 
   db:
-    container_name: my_project_postgres
-    image: postgres
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
     environment:
       - POSTGRES_USER=${POSTGRESS_DB_USER}
       - POSTGRES_PASSWORD=${POSTGRESS_DB_PASSWORD}
-      - POSTGRES_DB=database
-    ports:
-      - ${POSTGRESS_DB_HOST_PORT}:5432
-    volumes:
-      - .postgres:/var/lib/postgres/data
-    restart: always
+      - POSTGRES_DB=${POSTGRESS_DB_NAME}
+
+volumes:
+  postgres_data:
