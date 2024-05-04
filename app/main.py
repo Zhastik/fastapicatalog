@@ -1,12 +1,22 @@
 from fastapi import FastAPI
 from typing import List, Optional
 
+import uvicorn
+
 from app.Validate import add_iphone, get_iphone, update_iphone, patch_iphone
-from app.Database import iphone_database
+from app.shop.router import router as router_shop
+from app.price.router import router as router_price
+from app.model.router import router as router_model
+
+# from app.Database import iphone_database
 
 app = FastAPI(
     title='the plan to capture Poland'
 )
+
+app.include_router(router_model)
+app.include_router(router_price)
+app.include_router(router_shop)
 
 @app.get('/iphone/{iphone_id}', response_model=List[get_iphone])
 def Selected_iPhone(iphone_id: int):
@@ -60,6 +70,5 @@ def patch_price(iphone_id: int, price: List[patch_iphone]):
             return iphone_database
 
 
-
-
-
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)

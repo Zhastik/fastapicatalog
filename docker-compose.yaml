@@ -6,7 +6,7 @@ services:
     build: .
     depends_on:
       - db
-    command: uvicorn app.main:app --host 0.0.0.0
+    command: uvicorn app.main:app --host 0.0.0.0 && alembic upgrade head
     volumes:
       - ./app:/src/app
     ports:
@@ -15,30 +15,21 @@ services:
     env_file:
       - .env
 
-#  postgres:
-#    image: postgres:13
-#    environment:
-#          - POSTGRES_USER=app
-#          - POSTGRES_PASSWORD=123qwe
-#          - POSTGRES_DB=movies_database
-#    volumes:
-#      - ./movies_database.ddl:/movies_database.ddl:ro
-#    ports:
-#      - "5432:5432"
-#    healthcheck:
-#      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${DB_USER} -d ${DB_NAME}'"]
-#      interval: 5s
-#      timeout: 10s
-#      retries: 120
-
   db:
-    image: postgres:15-alpine
+    image: postgres:15
+    environment:
+          - POSTGRES_USER=${POSTGRESS_DB_USER}
+          - POSTGRES_PASSWORD=${POSTGRESS_DB_PASSWORD}
+          - POSTGRES_DB=${POSTGRESS_DB_NAME}
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    environment:
-      - POSTGRES_USER=${POSTGRESS_DB_USER}
-      - POSTGRES_PASSWORD=${POSTGRESS_DB_PASSWORD}
-      - POSTGRES_DB=${POSTGRESS_DB_NAME}
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${DB_USER} -d ${DB_NAME}'"]
+      interval: 5s
+      timeout: 10s
+      retries: 120
 
 volumes:
   postgres_data:

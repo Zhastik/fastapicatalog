@@ -1,16 +1,17 @@
 from logging.config import fileConfig
 import sys
-from os.path import abspath, dirname
+from os.path import abspath, dirname, join
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
 
-sys.path.insert(0, dirname(dirname(dirname(abspath(__file__)))))
+project_root = abspath(join(dirname(__file__), '..', '..', '..'))
+sys.path.insert(0, project_root)
 
 from app.config import settings
-from app.database import Base
+from app.database import Base, DATABASE_URL
 from app.model.models import iphone_models
 from app.shop.shops import iphone_shops
 from app.price.prices import iphone_prices
@@ -20,7 +21,7 @@ from app.price.prices import iphone_prices
 # access to the values within the .ini file in use.
 config = context.config
 
-config.set_main_option('sqlalchemy.url', f'{settings.DATABASE_URL}?async_fallback=True')
+config.set_main_option('sqlalchemy.url', f'{DATABASE_URL}?async_fallback=True')
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
