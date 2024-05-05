@@ -21,6 +21,5 @@ async def add_shop(shop_data: SShop):
     existing_shop = await ShopDAO.find_one_or_none(name=shop_data.name)
     if existing_shop:
         raise HTTPException(status_code=409, detail="Уже добавлен")
-
     await ShopDAO.add(name=shop_data.name)
 

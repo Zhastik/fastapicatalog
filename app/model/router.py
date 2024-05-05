@@ -11,14 +11,12 @@ router = APIRouter(
     tags=["Айфоны"]
 )
 
-
 @router.get("/range_iphone")
 async def iphone_in_range(from_id: int, to_id: int):
     iphones = await ModelsDAO.find_id_range(id_column_name="model_id", from_id=from_id, to_id=to_id)
     if not iphones:
         raise HTTPException(status_code=404, detail="Число до которого, слишком большое")
     return iphones
-
 
 
 @router.get("/{id}")
@@ -34,4 +32,4 @@ async def add_iphone(model_iphone: SModels_iphone):
     existing_iphone = await ModelsDAO.find_one_or_none(name=model_iphone.name)
     if existing_iphone:
         raise HTTPException(status_code=409, detail="Уже добавлен")
-    await ModelsDAO.add(model_iphone.name)
+    await ModelsDAO.add(name=model_iphone.name)

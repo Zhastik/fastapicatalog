@@ -1,13 +1,12 @@
 FROM python:3.9
 
-WORKDIR /src
+RUN mkdir /catalog
 
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+WORKDIR /catalog
+# Копируем зависимости и устанавливаем их
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 
-COPY requirements.txt requirements.txt
-COPY alembic.ini alembic.ini
+COPY . .
 
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
-
-COPY ./app app
+CMD ["gunicorn", "app.main:app", "--workers", "2", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind=0.0.0.0:8000"]

@@ -1,31 +1,21 @@
 version: '3.8'
-
 services:
-  app:
-    container_name: my_project_app
-    build: .
-    depends_on:
-      - postgres
-    command: alembic upgrade head  && uvicorn app.main:app --host 0.0.0.0
-    volumes:
-      - ./app:/src/app
-      - ./alembic.ini:/path/inside/container/alembic.ini # Добавляем том с alembic.ini
-    ports:
-      - ${APP_HOST_PORT}:8000
-    restart: on-failure
-    env_file:
-      - .env
-
-  postgres:
+  db:
     image: postgres:15
-    container_name: postgres
+    container_name: catalog_db
     env_file:
-      - .env
-    environment:
-          - POSTGRES_USER="postgres"
-          - POSTGRES_PASSWORD="postgres"
-          - POSTGRES_DB="postgres"
-    volumes:
-      - ./postgres_data:/var/lib/postgresql/data
+      - .env-non-dev
     ports:
-      - "5432:5432"
+      - 5432:5432
+
+  catalog:
+    build: .
+    container_name: catalog_app
+    env_file:
+      - .env-non-dev
+    depends_on:
+      - db
+    command: bash -c "alembic upgrade 04b1a28e994b && gunicorn app.main:app --workers 2 --worker-class uvicorn.workers.UvicornWorker --bind=0.0.0.0:8000"
+    ports:
+      - 7777:8000
+
