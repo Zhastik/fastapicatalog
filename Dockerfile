@@ -6,6 +6,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 COPY requirements.txt requirements.txt
+COPY alembic.ini alembic.ini
 
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 

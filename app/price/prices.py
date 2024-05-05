@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, JSON, Float, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, JSON, Float, DateTime, ForeignKey, ForeignKeyConstraint
 from app.database import Base
 
 class iphone_prices(Base):
@@ -8,3 +8,8 @@ class iphone_prices(Base):
     model_id = Column(Integer, ForeignKey('iphons.model_id')) # связана с моделью айфона
     price = Column(Float)
     update_date = Column(DateTime, nullable=False) # Дата обновления цены (не уверен что именно дата)
+
+    __table_args__ = (
+        ForeignKeyConstraint(['shop_id'], ['shop.shop_id']),
+        ForeignKeyConstraint(['model_id'], ['iphons.shop_id'])
+    )
