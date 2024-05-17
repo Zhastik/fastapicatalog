@@ -13,7 +13,7 @@ router = APIRouter(
 
 
 @router.get("/gets/{id}")
-async def get_prices(id: int):
+async def get_prices(id: str):
     price = await PriceDAO.find_one_or_none(price_id=id)
     if price is None:
         raise HTTPException(status_code=404, detail="Такого нет")
@@ -39,7 +39,7 @@ async def add_iphone(model_price: SPrices):
 
 
 @router.delete("/delete_price/{id}")
-async def delete_iphone(id: int):
+async def delete_iphone(id: str):
     await PriceDAO.delete(price_id=id)
 
 

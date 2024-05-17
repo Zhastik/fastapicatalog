@@ -10,7 +10,7 @@ router = APIRouter(
 )
 
 @router.get("/{id}")
-async def get_iphone(id: int):  # -> List[SModels_iphone]
+async def get_iphone(id: str):  # -> List[SModels_iphone]
     shop = await ShopDAO.find_one_or_none(shop_id=id)
     if shop is None:
         raise HTTPException(status_code=404, detail="Такого нет")
