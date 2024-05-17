@@ -14,7 +14,7 @@ router = APIRouter(
 
 @router.get("/gets/{id}")
 async def get_prices(id: str):
-    price = await PriceDAO.find_one_or_none(price_id=id)
+    price = await PriceDAO.price_one_or_none(price_id=id)
     if price is None:
         raise HTTPException(status_code=404, detail="Такого нет")
     return price
@@ -28,7 +28,7 @@ async def iphone_in_range(from_id: int, to_id: int):
 
 @router.post("/add_price")
 async def add_iphone(model_price: SPrices):
-    existing_iphone_shop = await PriceDAO.find_one_or_none(model_id=model_price.model_id, shop_id=model_price.shop_id)
+    existing_iphone_shop = await PriceDAO.price_one_or_none(model_id=model_price.model_id, shop_id=model_price.shop_id)
     if existing_iphone_shop:
         raise HTTPException(status_code=409, detail="Уже добавлен")
     try:
@@ -44,10 +44,10 @@ async def delete_iphone(id: str):
 
 
 @router.patch("/patch_price")
-async def patch_price(model_price: SPrices):
-    existing_iphone_shop = await PriceDAO.find_one_or_none(model_id=model_price.model_id, shop_id=model_price.shop_id)
+async def put_price(model_price: SPrices):
+    existing_iphone_shop = await PriceDAO.price_one_or_none(model_id=model_price.model_id, shop_id=model_price.shop_id)
     if existing_iphone_shop is None:
         raise HTTPException(status_code=409, detail="Такого нет")
-    await PriceDAO.patch(shop_id=model_price.shop_id, model_id=model_price.model_id, price=model_price.price,
+    await PriceDAO.put(shop_id=model_price.shop_id, model_id=model_price.model_id, price=model_price.price,
                              update_date=datetime.now().date())
 
