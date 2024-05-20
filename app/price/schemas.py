@@ -4,7 +4,7 @@ from datetime import datetime
 
 class SPrices(BaseModel):
     shop_id: int
-    model_id: int
+    product_id: int
     price: float
 
     class Config:

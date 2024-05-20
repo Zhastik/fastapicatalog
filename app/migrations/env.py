@@ -12,10 +12,10 @@ sys.path.insert(0, project_root)
 
 from app.config import settings
 from app.database import Base, DATABASE_URL
-from app.model.models import iphone_models
-from app.shop.shops import iphone_shops
-from app.price.prices import iphone_prices
-
+from app.product.models import product_model
+from app.shop.model import shops_model
+from app.price.model import prices_model
+from app.categories.models import category_model
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -28,7 +28,7 @@ config.set_main_option('sqlalchemy.url', f'{DATABASE_URL}?async_fallback=True')
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# add your model's MetaData object here
+# add your product's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata

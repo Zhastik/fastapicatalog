@@ -10,7 +10,7 @@ router = APIRouter(
 )
 
 @router.get("/{id}")
-async def get_iphone(id: str):  # -> List[SModels_iphone]
+async def get_shop(id: str):  # -> List[SModels_iphone]
     shop = await ShopDAO.shop_one_or_none(shop_id=id)
     if shop is None:
         raise HTTPException(status_code=404, detail="Такого нет")
@@ -25,4 +25,4 @@ async def add_shop(shop_data: SShop):
 
 @router.delete("/delete_shop/{id}")
 async def delete_shop(id: str):
-    await ShopDAO.delete(model_id=id)
+    await ShopDAO.delete(shop_id=id)

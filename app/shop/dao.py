@@ -2,11 +2,11 @@ from sqlalchemy import select
 
 from app.database import async_session_maker
 from app.service.base import BaseDAO
-from app.shop.shops import iphone_shops
+from app.shop.model import shops_model
 
 
 class ShopDAO(BaseDAO):
-    model = iphone_shops
+    model = shops_model
 
     @classmethod
     async def shop_one_or_none(cls, shop_id: str = None, name: str = None):

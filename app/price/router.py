@@ -28,11 +28,11 @@ async def iphone_in_range(from_id: int, to_id: int):
 
 @router.post("/add_price")
 async def add_iphone(model_price: SPrices):
-    existing_iphone_shop = await PriceDAO.price_one_or_none(model_id=model_price.model_id, shop_id=model_price.shop_id)
+    existing_iphone_shop = await PriceDAO.price_one_or_none(product_id=model_price.product_id, shop_id=model_price.shop_id)
     if existing_iphone_shop:
         raise HTTPException(status_code=409, detail="Уже добавлен")
     try:
-        await PriceDAO.add(shop_id=model_price.shop_id, model_id=model_price.model_id, price=model_price.price,
+        await PriceDAO.add(shop_id=model_price.shop_id, product_id=model_price.product_id, price=model_price.price,
                            update_date=datetime.now().date())
     except Exception as e:
         raise HTTPException(status_code=400, detail="Ошибка: Данного магазина или модели айфона нет в базе данных")
@@ -45,9 +45,9 @@ async def delete_iphone(id: str):
 
 @router.patch("/patch_price")
 async def put_price(model_price: SPrices):
-    existing_iphone_shop = await PriceDAO.price_one_or_none(model_id=model_price.model_id, shop_id=model_price.shop_id)
+    existing_iphone_shop = await PriceDAO.price_one_or_none(product_id=model_price.product_id, shop_id=model_price.shop_id)
     if existing_iphone_shop is None:
         raise HTTPException(status_code=409, detail="Такого нет")
-    await PriceDAO.put(shop_id=model_price.shop_id, model_id=model_price.model_id, price=model_price.price,
+    await PriceDAO.put(shop_id=model_price.shop_id, product_id=model_price.product_id   , price=model_price.price,
                              update_date=datetime.now().date())
 
