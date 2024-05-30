@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from fastapi import APIRouter, HTTPException
-from typing import List
 
 from app.price.dao import PriceDAO
 from app.price.schemas import SPrices
@@ -27,21 +26,17 @@ async def iphone_in_range(from_id: int, to_id: int):
     return prices
 
 @router.post("/add_price")
-async def add_iphone(model_price: SPrices):
-    existing_iphone_shop = await PriceDAO.price_one_or_none(product_id=model_price.product_id, shop_id=model_price.shop_id)
-    if existing_iphone_shop:
+async def add_price(model_price: SPrices):
+    existing_shop = await PriceDAO.price_one_or_none(shop_id=model_price.shop_id, product_id=model_price.product_id, price=model_price.price)
+    if existing_shop:
         raise HTTPException(status_code=409, detail="Уже добавлен")
     try:
-        await PriceDAO.add(shop_id=model_price.shop_id, product_id=model_price.product_id, price=model_price.price,
-                           update_date=datetime.now().date())
+        await PriceDAO.add(shop_id=model_price.shop_id, product_id=model_price.product_id, price=model_price.price, update_date=datetime.now())
     except Exception as e:
         raise HTTPException(status_code=400, detail="Ошибка: Данного магазина или модели айфона нет в базе данных")
-
-
 @router.delete("/delete_price/{id}")
 async def delete_iphone(id: str):
     await PriceDAO.delete(price_id=id)
-
 
 @router.patch("/patch_price")
 async def put_price(model_price: SPrices):

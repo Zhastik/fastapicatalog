@@ -3,7 +3,6 @@ FROM python:3.9
 RUN mkdir /catalog
 
 WORKDIR /catalog
-# Копируем зависимости и устанавливаем их
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 

@@ -1,8 +1,8 @@
 """ 
 
-Revision ID: 2a99e349d866
+Revision ID: 185c9fb58ada
 Revises: 
-Create Date: 2024-05-20 03:12:21.563501
+Create Date: 2024-05-30 05:05:01.443432
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '2a99e349d866'
+revision: str = '185c9fb58ada'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -45,11 +45,8 @@ def upgrade() -> None:
     sa.Column('price_id', sa.String(), nullable=False),
     sa.Column('shop_id', sa.String(), nullable=True),
     sa.Column('product_id', sa.String(), nullable=True),
-    sa.Column('category_id', sa.String(), nullable=True),
     sa.Column('price', sa.Float(), nullable=True),
     sa.Column('update_date', sa.DateTime(), nullable=False),
-    sa.ForeignKeyConstraint(['category_id'], ['category.category_id'], ),
-    sa.ForeignKeyConstraint(['category_id'], ['category.category_id'], ),
     sa.ForeignKeyConstraint(['product_id'], ['product.product_id'], ),
     sa.ForeignKeyConstraint(['product_id'], ['product.product_id'], ),
     sa.ForeignKeyConstraint(['shop_id'], ['shop.shop_id'], ),

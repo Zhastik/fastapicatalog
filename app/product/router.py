@@ -1,8 +1,4 @@
 from fastapi import APIRouter, HTTPException
-from typing import List
-
-from sqlalchemy import and_
-
 from app.product.dao import ModelsDAO
 from app.product.schemas import SModels_product
 
@@ -29,14 +25,14 @@ async def get_product(id: str, name: str = None):  # -> List[SModels_product]
 
 @router.post("/add_model")
 async def add_product(product_model: SModels_product):
-    existing_product = await ModelsDAO.model_one_or_none(name=product_model.name)
+    existing_product = await ModelsDAO.model_one_or_none(category_id=product_model.category_id, name=product_model.name)
     if existing_product:
         raise HTTPException(status_code=409, detail="Уже добавлен")
-    await ModelsDAO.add(name=product_model.name)
+    await ModelsDAO.add(category_id=product_model.category_id, name=product_model.name)
 
 @router.get("/search/")
 async def search_shops_by_partial_name(name: str):
-    product = await ModelsDAO.get_shops_by_partial_name(name)
+    product = await ModelsDAO.get_product_by_partial_name(name)
     if not product:
         raise HTTPException(status_code=404, detail="Такого нет")
     return product

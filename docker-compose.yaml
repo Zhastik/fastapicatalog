@@ -15,7 +15,7 @@ services:
       - .env-non-dev
     depends_on:
       - db
-    command: bash -c "alembic upgrade 2a99e349d866_ && gunicorn app.main:app --workers 2 --worker-class uvicorn.workers.UvicornWorker --bind=0.0.0.0:8000"
+    command: bash -c "alembic upgrade 185c9fb58ada_ && gunicorn app.main:app --workers 2 --worker-class uvicorn.workers.UvicornWorker --bind=0.0.0.0:8000"
     ports:
       - 7777:8000
 

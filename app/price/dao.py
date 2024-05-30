@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy import select, update
 
 from app.database import async_session_maker
@@ -9,13 +11,13 @@ class PriceDAO(BaseDAO):
     model = prices_model
 
     @classmethod
-    async def price_one_or_none(cls, price_id: str = None, shop_id: str = None, product_id: str = None, category_id: str = None, price: float = None):
-        filters = {k: v for k, v in {'price_id': price_id, 'shop_id': shop_id, 'product_id': product_id, 'category_id': category_id, 'price': price}.items() if v is not None}
+    async def price_one_or_none(cls, price_id: str = None, shop_id: str = None, product_id: str = None, price: float = None):
+        filters = {k: v for k, v in {'price_id': price_id, 'shop_id': shop_id, 'product_id': product_id, 'price': price}.items() if v is not None}
         return await cls.find_one_or_none(**filters)
 
     @classmethod
-    async def add(cls, price_id: str = None, shop_id: str = None, product_id: str = None, category_id: str = None, price: float = None):
-        filters = {k: v for k, v in {'price_id': price_id, 'shop_id': shop_id, 'product_id': product_id, 'category_id': category_id, 'price': price}.items() if v is not None}
+    async def add(cls,shop_id: str = None, product_id: str = None, price: float = None, update_date: datetime = None):
+        filters = {k: v for k, v in {'shop_id': shop_id, 'product_id': product_id, 'price': price, 'update_date': update_date}.items() if v is not None}
         return await cls.add_to_bd(**filters)
 
     @classmethod

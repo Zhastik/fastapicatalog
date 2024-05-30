@@ -2,7 +2,6 @@ from sqlalchemy import select, insert, delete, update, and_, func
 
 from app.database import async_session_maker
 
-
 class BaseDAO:
     model = None
 
